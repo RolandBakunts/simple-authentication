@@ -9,7 +9,7 @@ userRouter.post("/signup", signup);
 userRouter.get("/", verifyToken, getUserData);
 userRouter.post("/login", login);
 
-//  user signup
+// user signup
 export async function signup(req: Request, res: Response, next: NextFunction) {
     try {
         validateUser(req.body);

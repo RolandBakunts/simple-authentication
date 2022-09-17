@@ -15,7 +15,8 @@ export function validateUser(input: string) {
             .min(3)
             .max(30)
             .required(),
-    }).validate(input)
+
+        }).validate(input)
     if (schema.error) {
         throw new BadRequest('Wrong request input')
     };
