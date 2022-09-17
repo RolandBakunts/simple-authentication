@@ -21,17 +21,21 @@ export async function signup(input: UserInput) {
 
 
   export async function login(input: UserInput) {
-  const { username } = input;
-  const user = await getUser({ username });
-  if (!user) {
-    throw new NotFound("User doesn't exist");
-  }
-  const validPass = await bcrypt.compare(input.password, user.password);
-  if (!validPass) {
-    throw new Unauthorized("wrong password");
-  }
-
-  return jwt.sign({_id: user._id}, jwtSecret!)
+    try {
+      const { username } = input;
+      const user = await getUser({ username });
+      if (!user) {
+        throw new NotFound("User doesn't exist");
+      }
+      const validPass = await bcrypt.compare(input.password, user.password);
+      if (!validPass) {
+        throw new Unauthorized("wrong password");
+      }
+    
+      return jwt.sign({_id: user._id}, jwtSecret!)
+    } catch (e: any) {
+        throw new Error(e);
+    }
 }
 
 export async function getUser(input: Partial<UserInput>) {
