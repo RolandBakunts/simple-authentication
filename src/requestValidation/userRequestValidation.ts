@@ -1,6 +1,8 @@
 import Joi from 'joi';
 import { BadRequest } from '../errors'
-export function validateUser(input: any) {
+
+// validate user input data
+export function validateUser(input: string) {
     const schema = Joi.object({
         username: Joi.string()
             .alphanum()
@@ -13,10 +15,10 @@ export function validateUser(input: any) {
             .min(3)
             .max(30)
             .required(),
-    })
-    if (!schema.validate(input)) {
+    }).validate(input)
+    if (schema.error) {
         throw new BadRequest('Wrong request input')
     };
-    return true;
+    return;
 }
 

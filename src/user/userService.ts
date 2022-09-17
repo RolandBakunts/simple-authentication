@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import * as jwt from 'jsonwebtoken'
-
 import User, { UserInput } from './entities/userSchema';
 import { jwtSecret } from '../config'
 import { NotFound, BadRequest, Unauthorized } from "../errors";
@@ -8,7 +7,7 @@ import { NotFound, BadRequest, Unauthorized } from "../errors";
 export async function signup(input: UserInput) {
     try {
       const { username, password } = input;
-      const userExists = await getUser({username});
+      const userExists = await getUser({ username });
       if (userExists) {
         throw new BadRequest("User exists");
       }
@@ -20,8 +19,10 @@ export async function signup(input: UserInput) {
     }
   }
 
-export async function login(input: UserInput) {
-  const user = await getUser(input);
+
+  export async function login(input: UserInput) {
+  const { username } = input;
+  const user = await getUser({ username });
   if (!user) {
     throw new NotFound("User doesn't exist");
   }
@@ -35,7 +36,7 @@ export async function login(input: UserInput) {
 
 export async function getUser(input: Partial<UserInput>) {
   try {
-    const user = await User.findOne({input});
+    const user = await User.findOne( input );
     return user;
   } catch (e: any) {
     throw new Error(e);
